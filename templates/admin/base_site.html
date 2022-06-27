@@ -1,0 +1,13 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }}  به پرشین دولوپر {% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <img src="{% static 'admin/images/persian1.jpg' %}" style="width: 80px; height: 80px;" >
+        پنل (persian-dev)</a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
