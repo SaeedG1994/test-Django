@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
+from django.contrib.auth.decorators import  login_required
 from .models import Project, Tag
-from django.http import  HttpResponse
 from .form import ProjectForm
+
 
 
 def projects(request):
@@ -21,7 +22,7 @@ def single_project(request,pk):
     }
     return render(request,'projects/single-projects.html',context)
 
-
+@login_required(login_url="login_user")
 def create_project(request):
     form = ProjectForm()
     if request.method == 'POST':
