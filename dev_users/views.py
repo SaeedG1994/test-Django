@@ -1,7 +1,10 @@
 from django.shortcuts import render,redirect
-from .models import Profile
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
+from django.contrib import messages
+from .models import Profile
+from .form import CustomUserCreationForm
+
 def profiles(request):
     profile = Profile.objects.all()
     context = {
@@ -33,17 +36,41 @@ def loginUser(request):
         try:
             user = User.objects.get(username=username)
         except:
-            print('user name does not exist')
+            messages.error(request,'')
         user = authenticate(request,username=username,password=password)
-        if request is not None:
+        if user is not None:
             login(request,user)
             return redirect('profiles')
         else:
-            print('username or password is wrong')
+            messages.error(request,'username or password is wrong')
 
-    return render(request,'Users/login-user.html')
+    return render(request, 'Users/login-register-user.html')
 
 
 def logoutUser(request):
     logout(request)
+    messages.info(request,'You logout successfully')
     return redirect('profiles')
+
+
+def registerUser(request):
+    page ='register'
+    form = CustomUserCreationForm()
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            messages.success(request,'User account was created')
+            login(request,user)
+            return redirect('profiles')
+        else:
+            messages.error(request,'An Error User name or password its wrong ')
+
+    context ={
+        'page':page,
+        'form':form
+    }
+
+    return render(request, 'Users/login-register-user.html',context)

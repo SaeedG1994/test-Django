@@ -102,3 +102,6 @@ pre.codeblock {
   text-align: center;
   background: var(--color-main);
 }
+body {
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

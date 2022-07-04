@@ -18,11 +18,14 @@
   <title>DevSearch - Connect with Developers!</title>
 </head>
 <body>
-{% include 'Shared/navbar.html' %}
 
+{% include 'Shared/navbar.html' %}
+{#{% include 'Shared/message.html' %}#}
 {% block content %}
 
 {% endblock content %}
+
+<script src="{% static 'uikit/app.js' %}"></script>
 
 </body>
 </html>
