@@ -53,7 +53,7 @@
                     </div>
                     <div class="settings">
                         <h3 class="settings__title">Skills</h3>
-                        <a class="tag tag--pill tag--sub settings__btn tag--lg" href="#"><i class="im im-plus"></i> Add
+                        <a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'add_skill' %}"><i class="im im-plus"></i> Add
                             Skill</a>
                     </div>
 
@@ -65,9 +65,9 @@
                                     <p>{{ skill.description}}</p>
                                 </td>
                                 <td class="settings__tableActions">
-                                    <a class="tag tag--pill tag--main settings__btn" href="#"><i class="im im-edit"></i>
+                                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'update_skill' skill.id %} "><i class="im im-edit"></i>
                                         Edit</a>
-                                    <a class="tag tag--pill tag--main settings__btn" href="#"><i
+                                    <a class="tag tag--pill tag--main settings__btn" href="{% url 'delete_skill' skill.id %}?next=/account/"><i
                                             class="im im-x-mark-circle-o"></i>
                                         Delete</a>
                                 </td>
@@ -95,7 +95,7 @@
                             <td class="settings__tableActions">
                                 <a class="tag tag--pill tag--main settings__btn" href="{% url 'update-project' project.id %}"><i class="im im-edit"></i>
                                     Edit</a>
-                                <a class="tag tag--pill tag--main settings__btn" href="{% url 'delete-project' project.id %}"><i
+                                <a class="tag tag--pill tag--main settings__btn" href="{% url 'delete-project' project.id %}?next=/account/"><i
                                         class="im im-x-mark-circle-o"></i>
                                     Delete</a>
                             </td>

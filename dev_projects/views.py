@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import  login_required
 from .models import Project, Tag
 from .form import ProjectForm
-
+from django.contrib import messages
 
 
 def projects(request):
@@ -32,7 +32,8 @@ def create_project(request):
             project = form.save(commit=False)
             project.owner = profile
             form.save()
-            return redirect('projects')
+            messages.success(request,'Your Project Successfully Created!')
+            return redirect('user_account')
     context = {
         'form':form
     }
@@ -47,7 +48,8 @@ def update_project(request,pk):
         form = ProjectForm(request.POST,request.FILES,instance=project)
         if form.is_valid():
             form.save()
-            return redirect('projects')
+            messages.success(request,'Your Project Successfully Updated!')
+            return redirect('user_account')
     context ={
         'form':form,
     }
@@ -59,8 +61,9 @@ def delete_project(request,pk):
     project =profile.project_set.get(id=pk)
     if request.method == 'POST':
         project.delete()
-        return redirect('projects')
+        messages.success(request,'Your Project Successfully Deleted!')
+        return redirect('user_account')
     context ={
         'object':project,
     }
-    return render(request,'projects/delete-project.html',context)
+    return render(request, 'Shared/delete-form.html', context)

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Profile
-from .form import CustomUserCreationForm, ProfileEditForm
+from .form import CustomUserCreationForm, ProfileEditForm,SkillForm
 
 
 def profiles(request):
@@ -97,10 +97,54 @@ def editProfile(request):
         form = ProfileEditForm(request.POST,request.FILES,instance=profile)
         if form.is_valid():
             form.save()
+            messages.success(request,'your profile has been updated')
             return redirect('user_account')
-    messages.success(request,'your profile has been updated')
     context = {
         'form': form,
 
     }
     return render(request, 'Users/edit_ProfileForm.html', context)
+
+@login_required(login_url='login_user')
+def addSkill(request):
+    profile = request.user.profile
+    form = SkillForm()
+    if request.method == 'POST':
+        form = SkillForm(request.POST)
+        skill = form.save(commit=False)
+        skill.owner = profile
+        skill.save()
+        messages.success(request,'Your Skill successfully added!---Thanks')
+        return redirect('user_account')
+    context = {
+        'form':form
+    }
+    return render(request,'Users/skill-form.html',context)
+
+@login_required(login_url='login_user')
+def updateSkill(request,pk):
+    profile = request.user.profile
+    skill = profile.skill_set.get(id=pk)
+    form = SkillForm(instance=skill)
+    if request.method == 'POST':
+        form =SkillForm(request.POST,instance=skill)
+        form.save()
+        messages.success(request,'Your Skill was Updated successfully!')
+        return redirect('user_account')
+    context = {
+        'form':form
+    }
+    return render(request,'Users/skill-form.html',context)
+
+
+def deleteSkill(request,pk):
+    profile = request.user.profile
+    skill = profile.skill_set.get(id=pk)
+    if request.method == 'POST':
+        skill.delete()
+        messages.success(request,'Your Skill deleted Successfully!')
+        return redirect('user_account')
+    context ={
+        'object':skill
+    }
+    return render(request,'Shared/delete-form.html',context)
