@@ -3,13 +3,12 @@ from django.contrib.auth.decorators import  login_required
 from .models import Project, Tag
 from .form import ProjectForm
 from django.contrib import messages
+from .utils import projectSearch
 
 
 def projects(request):
-    pro = Project.objects.all()
-    context ={
-        'projects':pro,
-    }
+    projects,search_query= projectSearch(request)
+    context ={'projects':projects,'search_query':search_query}
     return render(request,'projects/projects.html',context)
 
 

@@ -5,14 +5,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Profile
 from .form import CustomUserCreationForm, ProfileEditForm,SkillForm
-
+from .utils import profileSearch
 
 def profiles(request):
-    profile = Profile.objects.all()
-    context = {
-        'profile': profile,
-
-    }
+    profiles,search_query= profileSearch(request)
+    context = {'profiles': profiles,'search_query':search_query}
     return render(request, 'Users/All-profiles.html', context)
 
 

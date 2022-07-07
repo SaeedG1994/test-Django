@@ -10,10 +10,11 @@
         </div>
 
         <div class="hero-section__search">
-          <form class="form" action="#" method="get">
+          <form class="form" action="{% url 'projects' %}" method="get">
             <div class="form__field">
               <label for="formInput#search">Search By Projects </label>
-              <input class="input input--text" id="formInput#search" type="text" name="text"
+              <input class="input input--text" id="formInput#search" type="text" name="search_query"
+                     value="{{ search_query }}"
                 placeholder="Search by Project Title" />
             </div>
 
@@ -23,7 +24,7 @@
       </div>
     </section>
     <!-- Search Result: DevList -->
-
+{% if projects %}
     <section class="projectsList">
       <div class="container">
         <div class="grid grid--three">
@@ -58,7 +59,9 @@
         </div>
       </div>
     </section>
-
+{% else %}
+  <h3 class="devInfo__title">Sorry We Couldn't Find Any projects : {{ search_query }} 😵 </h3>
+  {% endif %}
     <div class="pagination">
       <ul class="container">
         <li><a href="#" class="btn btn--disabled">&#10094; Prev</a></li>
