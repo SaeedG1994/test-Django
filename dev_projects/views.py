@@ -3,12 +3,13 @@ from django.contrib.auth.decorators import  login_required
 from .models import Project, Tag
 from .form import ProjectForm
 from django.contrib import messages
-from .utils import projectSearch
+from .utils import projectSearch,paginatorProject
 
 
 def projects(request):
     projects,search_query= projectSearch(request)
-    context ={'projects':projects,'search_query':search_query}
+    custom_range,projects = paginatorProject(request,projects,6)
+    context ={'projects':projects,'search_query':search_query,'custom_range':custom_range}
     return render(request,'projects/projects.html',context)
 
 

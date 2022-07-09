@@ -26,7 +26,7 @@ class Project(models.Model):
     class Meta:
         verbose_name ='پروژه'
         verbose_name_plural ='بخش پروژه'
-
+        ordering = ['created']
 
 class Review(models.Model):
     VOTE_TYPE =(

@@ -62,16 +62,8 @@
 {% else %}
   <h3 class="devInfo__title">Sorry We Couldn't Find Any projects : {{ search_query }} 😵 </h3>
   {% endif %}
-    <div class="pagination">
-      <ul class="container">
-        <li><a href="#" class="btn btn--disabled">&#10094; Prev</a></li>
-        <li><a href="#" class="btn btn--sub">01</a></li>
-        <li><a href="#" class="btn">02</a></li>
-        <li><a href="#" class="btn">03</a></li>
-        <li><a href="#" class="btn">04</a></li>
-        <li><a href="#" class="btn">Next &#10095;</a></li>
-      </ul>
-    </div>
+
+    {% include 'Shared/pagination.html' with queryset=projects custom_range=custom_range %}
   </main>
 </body>
 

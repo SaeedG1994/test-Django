@@ -5,11 +5,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Profile
 from .form import CustomUserCreationForm, ProfileEditForm,SkillForm
-from .utils import profileSearch
+from .utils import profileSearch,profilePaginator
 
 def profiles(request):
     profiles,search_query= profileSearch(request)
-    context = {'profiles': profiles,'search_query':search_query}
+    custom_range,profiles = profilePaginator(request,profiles,12)
+    context = {
+        'profiles': profiles,
+        'search_query':search_query,
+        'custom_range':custom_range,
+    }
     return render(request, 'Users/All-profiles.html', context)
 
 
