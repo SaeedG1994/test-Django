@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import  login_required
 from .models import Project, Tag
-from .form import ProjectForm
+from .form import ProjectForm,ReviewForm
 from django.contrib import messages
 from .utils import projectSearch,paginatorProject
 
@@ -14,11 +14,25 @@ def projects(request):
 
 
 def single_project(request,pk):
-    single_pro = Project.objects.get(id=pk)
-    tags = single_pro.tags.all()
+    project = Project.objects.get(id=pk)
+    form = ReviewForm()
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        review = form.save(commit=False)
+        review.project = project
+        review.owner = request.user.profile
+        review.save()
+
+        project.getVoteCount
+
+        messages.success(request,'Your Review successfully Submitted!😍')
+        return redirect('single-project',pk=project.id)
+
+    tags = project.tags.all()
     context = {
-        'project':single_pro,
-        'tags':tags
+        'project':project,
+        'tags':tags,
+        'form':form
     }
     return render(request,'projects/single-projects.html',context)
 

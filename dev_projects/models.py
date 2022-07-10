@@ -24,18 +24,37 @@ class Project(models.Model):
         return self.title
 
     class Meta:
+        ordering = ['-vote_total','-vote_ratio','title']
         verbose_name ='پروژه'
         verbose_name_plural ='بخش پروژه'
-        ordering = ['created']
+
+    @property
+    def reviewers(self):
+        queryset =self.review_set.all().values_list('owner__id',flat=True)
+        return queryset
+
+
+    @property
+    def getVoteCount(self):
+        reviews = self.review_set.all()
+        upVotes = reviews.filter(value='up').count()
+        totalVotes =reviews.count()
+
+        ratio = (upVotes / totalVotes) * 100
+        self.vote_total = totalVotes
+        self.vote_ratio = ratio
+        self.save()
+
 
 class Review(models.Model):
     VOTE_TYPE =(
         ('up','Up vote'),
         ('down','Down Vote')
     )
-    project = models.ForeignKey(Project,on_delete=models.CASCADE,verbose_name = 'ارتباط با دوره ')
-    body = models.TextField(null=True,blank=True,verbose_name = 'بدنه')
-    value = models.CharField(max_length= 200,choices=VOTE_TYPE,verbose_name = 'مقدار')
+    owner = models.ForeignKey(Profile,on_delete=models.CASCADE,null=True,blank=True,verbose_name='مالک پروژه')
+    project = models.ForeignKey(Project,on_delete=models.CASCADE,verbose_name = 'ارتباط با کدام دوره ')
+    body = models.TextField(null=True,blank=True,verbose_name = 'توضیحات')
+    value = models.CharField(max_length= 200,choices=VOTE_TYPE,verbose_name = 'رای مثبت یا منفی')
     created = models.DateTimeField(auto_now_add=True,verbose_name = 'تاریخ ایجاد')
     id = models.UUIDField(default=uuid.uuid4,unique=True,primary_key=True,editable=False)
 
@@ -43,6 +62,7 @@ class Review(models.Model):
         return  self.value
 
     class Meta:
+        unique_together = [['owner', 'project']]
         verbose_name = ' بازبینی جدید'
         verbose_name_plural = 'بخش بازبینی'
 

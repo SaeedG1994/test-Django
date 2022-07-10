@@ -44,7 +44,7 @@ def loginUser(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('profiles')
+            return redirect(request.GET['next'] if 'next' in request.GET else 'account')
         else:
             messages.error(request, 'username or password is wrong')
 
@@ -68,7 +68,7 @@ def registerUser(request):
             user.save()
             messages.success(request, 'User account was created')
             login(request, user)
-            return redirect('profiles')
+            return redirect('user_account')
         else:
             messages.error(request, 'An Error User name or password its wrong ')
 

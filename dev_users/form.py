@@ -22,7 +22,7 @@ class CustomUserCreationForm(UserCreationForm):
 class ProfileEditForm(ModelForm):
     class Meta:
         model = Profile
-        fields = ['name','email','username','location','bio','profile_image','social_twitter','social_github']
+        fields = ['name','email','username','location','short_bio','bio','profile_image','social_twitter','social_github']
         labels ={
             'username':'UserName',
             'name': 'Name',
