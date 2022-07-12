@@ -37,12 +37,15 @@
                 </li>
               {% endif %}
               </ul>
-              <a href="#" class="btn btn--sub btn--lg">Send Message </a>
+            {% if request.user.profile.id != profile.id %}
+              <a href="{% url 'create_message' profile.id %}" class="btn btn--sub btn--lg">Send Message </a>
+            {% endif %}
             </div>
           </div>
         </div>
         <div class="column column--2of3">
           <div class="devInfo">
+              {% include 'Shared/message.html' %}
             <h3 class="devInfo__title">About Me</h3>
             <p class="devInfo__about">{{ profile.bio }}</p>
           </div>

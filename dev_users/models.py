@@ -25,12 +25,13 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'یوزر'
         verbose_name_plural = 'پروفایل'
+        ordering = ['created']
 
 
 class Skill(models.Model):
 
     owner = models.ForeignKey(Profile,on_delete=models.CASCADE,null=True,blank=True,verbose_name='یوز مربوط ')
-    name = models.CharField(max_length=200,null=True,blank=True,verbose_name='نام ')
+    name = models.CharField(max_length=200,null=True,blank=True,verbose_name='نام مهارت ')
     description =models.TextField(null=True,blank=True,verbose_name='توضیحات ')
     created = models.DateTimeField(auto_now_add=True,verbose_name='تاریخ ایجاد ')
     id = models.UUIDField(default=uuid.uuid4,unique=True,primary_key=True,editable=False)
@@ -41,3 +42,23 @@ class Skill(models.Model):
     class Meta:
         verbose_name = 'مهارت'
         verbose_name_plural = 'مهارت ها'
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(Profile,on_delete=models.SET_NULL,blank=True,null=True,verbose_name='یوز ارسال کننده ')
+    recipient = models.ForeignKey(Profile,on_delete=models.SET_NULL,blank=True,null=True,related_name="messages",verbose_name='یوز دریافت کننده ')
+    name = models.CharField(max_length=200,null=True,blank=True,verbose_name='نام')
+    email = models.EmailField(max_length=200,null=True,blank=True,verbose_name='ایمیل')
+    subject = models.CharField(max_length=200,null=True,blank=True,verbose_name='موضوع')
+    is_read = models.BooleanField(default=False,null=True,verbose_name='وضعیت خوانده شده پیام')
+    body = models.TextField(verbose_name='جزئیات پیام')
+    created = models.DateTimeField(auto_now_add=True,verbose_name='تاریخ ایجاد ')
+    id = models.UUIDField(default=uuid.uuid4,primary_key=True,unique=True,editable=False)
+
+    def __str__(self):
+        return self.subject
+
+    class Meta :
+        verbose_name = 'پیام'
+        verbose_name_plural = 'پیام های کاربران'
+        ordering = ['is_read','created']
