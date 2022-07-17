@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     #our app
     'dev_projects.apps.DevProjectsConfig',
     'dev_users.apps.DevUsersConfig',
+    'rest_framework',
 
 ]
 
