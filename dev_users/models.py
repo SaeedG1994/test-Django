@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 import  uuid
 
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,null=True,blank=True,verbose_name='یوزر')
     name = models.CharField(max_length=200,null=True,blank=True,verbose_name='نام')
@@ -26,6 +27,14 @@ class Profile(models.Model):
         verbose_name = 'یوزر'
         verbose_name_plural = 'پروفایل'
         ordering = ['created']
+
+    @property
+    def imageURL(self):
+        try:
+            url = self.profile_image.url
+        except:
+            url = ''
+        return url
 
 
 class Skill(models.Model):
@@ -61,4 +70,4 @@ class Message(models.Model):
     class Meta :
         verbose_name = 'پیام'
         verbose_name_plural = 'پیام های کاربران'
-        ordering = ['is_read','created']
+        ordering = ['is_read','-created']

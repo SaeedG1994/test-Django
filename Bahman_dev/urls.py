@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('projects/',include('dev_projects.urls')),
     path('',include('dev_users.urls')),
+    path('',include('dev_blog.urls')),
     path('api/',include('api.urls')),
 
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name='Shared/reset_password.html'),

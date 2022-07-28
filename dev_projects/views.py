@@ -59,12 +59,19 @@ def update_project(request,pk):
     project =profile.project_set.get(id=pk)
     form = ProjectForm(instance=project)
     if request.method =='POST':
+        newTag = request.POST.get('newtags').replace(',', " ").split()
+
         form = ProjectForm(request.POST,request.FILES,instance=project)
         if form.is_valid():
-            form.save()
+            project = form.save()
+            for tag in newTag:
+                tag , created = Tag.objects.get_or_create(name=tag)
+                project.tags.add(tag)
+
             messages.success(request,'Your Project Successfully Updated!')
             return redirect('user_account')
     context ={
+        'project':project,
         'form':form,
     }
     return render(request,'projects/create-project.html/',context)
